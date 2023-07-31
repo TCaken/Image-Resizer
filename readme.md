@@ -1,6 +1,6 @@
 # Image Resizer
 
-Electron application that allows you to select an image and easily change the width and/or height. This is my recreation from this (tutorial from Traversty Media)[https://www.youtube.com/watch?v=ML743nrkMHw]
+Electron application that allows you to select an image and easily change the width and/or height. This is my recreation from this [tutorial from Traversty Media](https://www.youtube.com/watch?v=ML743nrkMHw)
 
 Tech Stacks:
 - Electron
