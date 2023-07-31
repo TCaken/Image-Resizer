@@ -12,7 +12,7 @@
   "author": "Tan Caken",
   "license": "MIT",
   "dependencies": {
-    "electron": "^25.3.1",
+    "electron": "^20.2.0",
     "resize-img": "^2.0.0",
     "toastify-js": "^1.12.0"
   }
