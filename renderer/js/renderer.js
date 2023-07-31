@@ -1,5 +1,3 @@
-const { ipcRenderer } = require("electron")
-
 const imgInput = document.getElementById("img")
 const heightInput = document.getElementById("height")
 const widthInput = document.getElementById("width")
