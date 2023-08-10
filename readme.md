@@ -2,6 +2,9 @@
 
 Electron application that allows you to select an image and easily change the width and/or height. This is my recreation from this [tutorial from Traversty Media](https://www.youtube.com/watch?v=ML743nrkMHw)
 
+Features :
+- Resize images to any sizes
+
 Tech Stacks:
 - Electron
 - Bulma.css
@@ -32,7 +35,9 @@ npm start
         ```
         
 ## Future Plans
-- Packaging it so that it can be distributed to other users to use
+- [Done] Packaging it so that it can be distributed to other users to use
     - There are multiple ways to package Electron apps. I would suggest [Electron Forge](https://www.electronforge.io/). I did not implement any packaging into this app.
-- Adding a “Select folder” to customise the location of the resised images
+- [Done] Adding a “Select folder” to customise the location of the resised images
+- Create a production and development environment (Learn about Electron)
+
 

@@ -1,10 +1,11 @@
-const { BrowserWindow, app, Menu, ipcMain, shell } = require('electron')
+const { BrowserWindow, app, dialog, Menu, ipcMain, shell } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const os =  require('os')
 const resizeImg = require("resize-img")
 
 let mainWindow;
+let aboutWindow;
 
 const isDev = process.env.NODE_ENV !== "production";
 const isMac = process.platform === 'darwin';
@@ -14,6 +15,7 @@ function createMainWindow(){
         title : "Image Resizer",
         width : isDev? 1000 : 500,
         height : 900,
+        icon : `$(__dirname)/assets/icons/Icon_256x256.png`,
         resizeable : isDev,
         webPreferences: {
           contextIsolation: true,
@@ -32,7 +34,7 @@ function createMainWindow(){
 
 //About Window
 function createAboutWindow(){
-  const aboutWindow = new BrowserWindow({
+  aboutWindow = new BrowserWindow({
       title : "About Image Resizer",
       width : 300,
       height : 300,
@@ -51,7 +53,7 @@ app.whenReady().then(() => {
     Menu.setApplicationMenu(mainMenu)
 
     // Remove mainWindow from memory on close
-    // mainWindow.on('closed', () => (mainWindow = null))
+    mainWindow.on('closed', () => (mainWindow = null))
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
@@ -114,9 +116,25 @@ const menu = [
 ]
 
 ipcMain.on("image:resize", (e, options) => {
-  options.dest = path.join(os.homedir(), "image-resizer")
+  if(!options.dest){
+    options.dest = path.join(os.homedir(), "image-resizer")
+  }
   resizeImage(options)
   console.log(options)
+})
+
+// Catch the select directory event from renderer.js
+ipcMain.on("select-dirs", async (e, options) => {
+  try{
+    const result = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory']
+    })
+    //console.log('directories selected', result.filePaths)
+    mainWindow.webContents.send("send-dirs", {dirsName : result.filePaths[0]})
+  }
+  catch(err){
+    console.log(err)
+  }
 })
 
 async function resizeImage({imgPath, width, height, dest}){

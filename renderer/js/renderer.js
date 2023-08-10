@@ -1,9 +1,11 @@
+
 const imgInput = document.getElementById("img")
 const heightInput = document.getElementById("height")
 const widthInput = document.getElementById("width")
 const filename = document.getElementById("filename")
 const outputPath = document.getElementById("output-path")
 const form = document.querySelector("#img-form")
+const selectDirs = document.querySelector("#select-dirs")
 
 console.log(versions.node())
 
@@ -36,6 +38,7 @@ function sendImage(e){
   const width = widthInput.value;
   const height = heightInput.value;
   const imgPath = imgInput.files[0].path
+  const dest = outputPath.innerText
 
   if(!imgInput.files[0]){
     alertError("Pleae upload an image");
@@ -51,7 +54,8 @@ function sendImage(e){
   ipcRenderer.send('image:resize', {
     imgPath,
     width,
-    height
+    height,
+    dest
   })
 
 }
@@ -96,5 +100,20 @@ function alertSuccess(message){
   })
 }
 
+// Send the directory request to ipcMain
+// This method allow the electron app to select folder while compatible with different frontend format
+function selectDirectory(e){
+  ipcRenderer.send("select-dirs")
+}
+
+// Catch the send-dirs event from the main channel
+ipcRenderer.on("send-dirs", (options) => {
+  if(options.dirsName){
+    outputPath.innerText = options.dirsName
+    alertSuccess("Successfully output folder!")
+  }
+})
+
+selectDirs.addEventListener("click", selectDirectory)
 imgInput.addEventListener("change", loadImage)
 form.addEventListener("submit", sendImage)
